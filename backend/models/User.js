@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
 //création du Shema
-const userSchema = mongoose.Schema({
+const usersModels= mongoose.Schema({
   email: {
     type: String, //type attendu: du Texte
     required: true, //Champs obligatoire
@@ -17,7 +17,13 @@ const userSchema = mongoose.Schema({
 });
 
 //eviter les doublons d'utilisateur avec la même adresse email
-userSchema.plugin(uniqueValidator);
+usersModels.plugin(uniqueValidator);
 
-//exportation du Shema User
-module.exports = mongoose.model('User', userSchema);
+//exportation du Model User
+module.exports = mongoose.model('User', usersModels);
+
+// ne pas oublier le ratelimit
+// comment utiliser un middleware avec express
+// un middleware permet de gérer la sécurité d'une application
+// express-rate-limit
+// installer email-validator
