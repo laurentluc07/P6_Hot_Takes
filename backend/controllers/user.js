@@ -9,6 +9,7 @@ const User = require('../models/User');
 //export des fonctions 'signup' et 'login'
 exports.signup = (req, res, next) => {
   //hashage du mot de passe 10 fois
+  // res.status(200).json({message: 'Hello World'})
   bcrypt.hash(req.body.password, 10)
   //création de la Promise
     .then(hash => {
@@ -67,7 +68,7 @@ exports.login = (req, res, next) => {
                 userId: user._id
               },
               //clé secrete d'encodage
-              'u0JxYwok4U-Jn0`=(-69T5E=m!MkJ6', {
+              process.env.AUTH_TOKEN, {
               //délais d'expiration
                 expiresIn: '24h'
               }

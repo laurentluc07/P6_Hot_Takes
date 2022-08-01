@@ -1,11 +1,24 @@
-const rateLimit = require('express-rate-limit')
+const rateLimit = require("express-rate-limit");
 
-const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
-	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-})
+const Limit = {
+  auth: rateLimit({             // Route user AUTH
+    windowMs: 15 * 60 * 1000,   // 15 minutes
+    max: 100,                   // Limite chaque adresse IP à 100 requêtes par "fenêtre" (ici, par tranche de 15 minutes)
+    standardHeaders: true,      // Renvoye les informations de limite de taux dans les en-têtes `RateLimit-*`
+    legacyHeaders: false,       // Désactivation des en-têtes `X-RateLimit-*`
+  }),
+  routePpd: rateLimit({         // Route sauce POST PUT DELETE
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+  }),
+  routeGet: rateLimit({         // Route sauce GET
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+  }),
+};
 
-// Apply the rate limiting middleware to all requests
-app.use(limiter)
+module.exports = Limit;

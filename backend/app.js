@@ -2,11 +2,13 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const userRoutes = require('./routes/user');
+const saucesRoutes = require('./routes/sauces');
+const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config();
 
 // On se connecte à la base de données
-  mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
@@ -29,6 +31,8 @@ app.use(express.json());
 
 //gestion des routes principales
 app.use('/api/auth', userRoutes);
+app.use('/api/sauces', saucesRoutes);
+app.use("/images", express.static(path.join(__dirname, "images"))); // Gestion des fichiers images de manière static
 
 //exportation de la constante app
 module.exports = app;
