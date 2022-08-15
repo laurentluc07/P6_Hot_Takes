@@ -1,5 +1,6 @@
 const multer = require('multer');
 const { auth } = require('./ratelimit');
+const fs = require('fs');
 
 const MIME_TYPES = {
   'image/jpg': 'jpg',
@@ -9,6 +10,8 @@ const MIME_TYPES = {
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
+    // fonction pour creer dossier
+    fs.mkdirSync('images', {recursive: true})
     callback(null, 'images');
   },
   filename: (req, file, callback) => {
@@ -17,5 +20,4 @@ const storage = multer.diskStorage({
     callback(null, 'HotSauces' + Date.now() + '.' + extension);
   }
 });
-
 module.exports = multer({storage: storage}).single('image');
