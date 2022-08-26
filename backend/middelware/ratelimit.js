@@ -1,5 +1,8 @@
 const rateLimit = require("express-rate-limit");
 
+// Permet de limiter le nombre de requetes au niveau du backend
+// Pour se protéger des robots
+// On vient donc le faire sur les différentes méthodes (user Auth, sauce POST PUT DELETE, sauce GET)
 const Limit = {
   auth: rateLimit({             // Route user AUTH
     windowMs: 15 * 60 * 1000,   // 15 minutes

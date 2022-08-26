@@ -1,8 +1,8 @@
 //Importation du package Mongoose
 const mongoose = require('mongoose');
-const {ObjectId} = mongoose.Schema.Types
 
-//Création du shéma de données
+// Création du schéma de données
+// On vient créer le schema des données que l'on doit avoir (colonnes)
 const sauceSchema = mongoose.Schema({
   userId: {
     type: String, //type attendu: du Texte

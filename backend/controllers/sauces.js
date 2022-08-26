@@ -1,7 +1,11 @@
 //importation de 'Sauce.js' de models
 const Sauce = require('../models/Sauce');
 //importation du package 'fs' de Node
+// Le module fs de Node.js fournit des fonctions utiles pour interagir avec le système de fichiers
 const fs = require('fs');
+// const mongoose = require('mongoose');
+// const ObjectId = mongoose.Types.ObjectId;
+var ObjectId = require('mongodb').ObjectId;
 
 //export des fonctions 'create', 'getOne', 'modify', 'delete', 'getAll', 'createLike', 'createDislike'
 exports.createSauce = (req, res, next) => {
@@ -130,45 +134,46 @@ exports.getAllSauces = (req, res, next) => {
     );
 };
 
-exports.createLike = (req, res) => {
+exports.createLike = async (req, res) => {
   //Récupération d'une seule Sauce avec 'findOne'
 Sauce.findOne({
-    _id: req.params.id
+  _id: req.params.id,
   })
-.then(sauce => {
-  // la personne n'aime pas la sauce
-  if (req.body.like == -1) {
-    sauce.dislikes++; // ajout d'un dislike
-    sauce.usersDisliked.push(req.body.userId); // ajout du username + dislike dans le tableau
-    sauce.save();
-  }
-  // la personne aime la sauce
-  if (req.body.like == 1) {
-    sauce.likes++; // ajout d'un like
-    sauce.usersLiked.push(req.body.userId); // ajout du username + like dans le tableau
-    sauce.save();
-  }
+  .then(sauce => {
 
-  // la personne s'est trompée
-  if (req.body.like == 0) {
-    //ajout de conditions pour que la suppression du Like soit attribué à l'id
-    if (sauce.usersLiked.indexOf(req.body.userId) != -1) {
-    sauce.likes--; // annulation du like
-    sauce.usersLiked.splice(sauce.usersLiked.indexOf(req.body.userId), 1); //Suppression du like en fonction de son id
-  }else{
-    // conditions pour le dislike
-    sauce.dislikes--; // annulation du dislike
-    sauce.usersDisliked.splice(sauce.usersDisliked.indexOf(req.body.userId), 1); // Suppression du dislike en fonction de son id
-  }
-    sauce.save();
+    // la personne n'aime pas la sauce
+    if (req.body.like == -1 && sauce.usersDisliked.indexOf(req.body.userId) == -1) { // == -1 c'est pour dire qu'il n'y ai pas
+      sauce.dislikes++; // ajout d'un dislike
+      sauce.usersDisliked.push(req.body.userId); // ajout du username + dislike dans le tableau
+      sauce.save();
+    }
+    // la personne aime la sauce
+    if (req.body.like == 1 && sauce.usersLiked.indexOf(req.body.userId) == -1) {
+      sauce.likes++; // ajout d'un like
+      sauce.usersLiked.push(req.body.userId); // ajout du username + like dans le tableau
+      sauce.save();
+    }
 
-  }
-  //réponse de réussite code 200
-  res.status(200).json({message:'like pris en compte'})
-})
-.catch(error => {
-res.status(500).json({error})
-//réponse d'erreur avec code 500
-});
+    // la personne s'est trompée
+    if (req.body.like == 0) {
+      //ajout de conditions pour que la suppression du Like soit attribué à l'id
+      if (sauce.usersLiked.indexOf(req.body.userId) != -1) {
+      sauce.likes--; // annulation du like
+      sauce.usersLiked.splice(sauce.usersLiked.indexOf(req.body.userId), 1); //Suppression du like en fonction de son id
+      }else{
+        // conditions pour le dislike
+        sauce.dislikes--; // annulation du dislike
+        sauce.usersDisliked.splice(sauce.usersDisliked.indexOf(req.body.userId), 1); // Suppression du dislike en fonction de son id
+      }
+      sauce.save();
+    }
+    //réponse de réussite code 200
+    res.status(200).json({message:'like pris en compte'})
+  })
+  .catch(error => {
+  res.status(500).json({error})
+  //réponse d'erreur avec code 500
+  });
+  // console.log(mongoResult)
 
 };

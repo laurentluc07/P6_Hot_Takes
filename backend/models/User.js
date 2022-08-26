@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
 //création du Shema
+// On vient créer le shema des données que l'on doit avoir (colonnes)
 const usersModels= mongoose.Schema({
   email: {
     type: String, //type attendu: du Texte
@@ -21,9 +22,3 @@ usersModels.plugin(uniqueValidator);
 
 //exportation du Model User
 module.exports = mongoose.model('User', usersModels);
-
-// ne pas oublier le ratelimit
-// comment utiliser un middleware avec express
-// un middleware permet de gérer la sécurité d'une application
-// express-rate-limit
-// installer email-validator

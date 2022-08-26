@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken"); // Permet de créer et de vérifier le TOKEN d'authentication
 
 module.exports = (req, res, next) => {
+  // Le try permet de surveiller le code que l'on met a l'intérieur
+  // Losrqu'une exception est levé il le transmets directement au catch
   try {
 
     const token = req.headers.authorization.split(" ")[1];          // Récupération du TOKEN contenu dans le header

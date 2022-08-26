@@ -16,6 +16,12 @@ mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopolo
 const app = express();
 
 //Insertion CORS
+// Le «  Cross-origin resource sharing » (CORS) ou « partage des ressources entre origines multiples »
+// est un mécanisme qui consiste à ajouter des en-têtes HTTP afin de permettre
+// à un agent utilisateur d'accéder à des ressources d'un serveur situées sur une autre origine que le site
+// courant. Un agent utilisateur réalise une requête HTTP multi-origine ( cross-origin ) lorsqu'il demande
+// une ressource provenant d'un domaine, d'un protocole ou d'un port différent de ceux utilisés pour
+// la page courante.
 app.use((req, res, next) => {
   //qui peut accéder à l'API
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -29,7 +35,7 @@ app.use((req, res, next) => {
 //pour tranformer les requête en JSON
 app.use(express.json());
 
-//gestion des routes principales
+//gestion des routes principales (différents chemin de l'api (Authentification, Sauces et Images))
 app.use('/api/auth', userRoutes);
 app.use('/api/sauces', saucesRoutes);
 app.use("/images", express.static(path.join(__dirname, "images"))); // Gestion des fichiers images de manière static

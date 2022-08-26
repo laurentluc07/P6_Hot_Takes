@@ -1,10 +1,10 @@
-//importation du package router d'Express
+//importation d'Express et des différents middelware
 const express = require('express');
 const ratelimit = require('../middelware/ratelimit');
 const emailvalidator = require('../middelware/email-validator');
-const router = express.Router();
+const router = express.Router();  //importation du package router d'Express
 
-//assignation des controllers
+//assignation des controllers (création du chemin user dans les controllers)
 const userCtrl = require('../controllers/user');
 
 //définition du chemin 'signup' et 'login'
